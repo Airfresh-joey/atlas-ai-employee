@@ -246,6 +246,17 @@
             background: rgba(72, 187, 120, 0.3);
         }
 
+        .btn-landing {
+            background: rgba(159, 122, 234, 0.2);
+            color: #9f7aea;
+            border: 1px solid rgba(159, 122, 234, 0.3);
+            grid-column: 1 / -1;
+        }
+
+        .btn-landing:hover {
+            background: rgba(159, 122, 234, 0.3);
+        }
+
         /* ACTIVITY FEED STYLES */
         .activity-section {
             background: #1e2139;
@@ -332,6 +343,11 @@
             animation: slideIn 0.3s ease;
         }
 
+        .activity-item.linkedin {
+            border-left: 3px solid #0077b5;
+            background: rgba(0, 119, 181, 0.05);
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -361,6 +377,17 @@
         .activity-subtitle {
             font-size: 0.85rem;
             color: #a0aec0;
+        }
+
+        .activity-preview {
+            font-size: 0.8rem;
+            color: #718096;
+            font-style: italic;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            border-left: 2px solid rgba(102, 126, 234, 0.5);
         }
 
         .activity-time {
@@ -632,6 +659,9 @@
                 <button class="btn btn-primary" onclick="viewPipeline()">VIEW PIPELINE</button>
                 <button class="btn btn-secondary" onclick="showSettings()">SETTINGS</button>
                 <button class="btn btn-pause" id="pauseBtn" onclick="togglePause()">PAUSE</button>
+                <a href="./demo-landing.html" target="_blank" class="btn btn-landing" style="text-decoration: none; text-align: center;">
+                    🌐 VIEW DEMO PAGE
+                </a>
             </div>
         </div>
 
@@ -694,10 +724,35 @@
             { name: "Skyline Construction", contact: "James Porter", industry: "Construction", employees: "250-300", stage: "responded" }
         ];
 
+        // LinkedIn comment templates
+        const linkedinComments = [
+            "Great insights on {topic}! This resonates with what we're seeing in the {industry} space.",
+            "Spot on, {contact}. The {topic} challenge is real. Would love to hear more about how you're tackling this.",
+            "This is exactly what {industry} leaders need to hear. Thanks for sharing, {contact}!",
+            "Couldn't agree more. We're seeing similar trends with {industry} clients.",
+            "Powerful perspective on {topic}. The data you shared is compelling!"
+        ];
+
+        // LinkedIn topics
+        const linkedinTopics = [
+            "scaling operations", "AI adoption", "team productivity", "digital transformation",
+            "growth strategy", "operational efficiency", "market expansion", "automation"
+        ];
+
+        // LinkedIn DM templates
+        const linkedinMessages = [
+            "Hi {contact}, saw your recent post on {topic} — really resonated. We help {industry} companies solve exactly that challenge. Worth a quick chat?",
+            "Hey {contact}, loved your take on {topic}. I work with {industry} leaders facing similar issues. Mind if I share how we've helped others? Here's a quick overview: {link}",
+            "Hi {contact}, your insights on {topic} caught my attention. We've built something that might help {company}. Check it out: {link}"
+        ];
+
         const actions = [
             { icon: "🔍", title: "Researching prospect", type: "research" },
             { icon: "✍️", title: "Writing email", type: "write" },
             { icon: "📧", title: "Sending email", type: "send" },
+            { icon: "💬", title: "Commenting on LinkedIn post", type: "linkedin_comment" },
+            { icon: "🤝", title: "Sending LinkedIn connection request", type: "linkedin_connect" },
+            { icon: "💼", title: "Sending LinkedIn message", type: "linkedin_message" },
             { icon: "🔄", title: "Following up", type: "followup" },
             { icon: "📊", title: "Analyzing response", type: "analyze" },
             { icon: "🌐", title: "Generating landing page", type: "webpage" }
@@ -714,7 +769,7 @@
                     state.uptime++;
                     updateUptime();
                 }
-            }, 60000 / state.speed); // Update every minute (adjusted for speed)
+            }, 60000 / state.speed);
         }
 
         // Update stats display
@@ -749,7 +804,7 @@
             document.getElementById('actionSubtitle').textContent = `${company.name} — ${company.industry}`;
 
             // Animate progress
-            const duration = (8000 + Math.random() * 4000) / state.speed; // 8-12 seconds (adjusted for speed)
+            const duration = (8000 + Math.random() * 4000) / state.speed;
             const interval = 50;
             const increment = (100 / duration) * interval;
 
@@ -779,21 +834,49 @@
             // Update stats based on action type
             if (action.type === 'research') {
                 state.prospects++;
-                if (Math.random() > 0.4) { // 60% chance to send email after research
+                if (Math.random() > 0.4) {
                     setTimeout(() => nextAction(), 1000 / state.speed);
                 }
             } else if (action.type === 'send') {
                 state.emails++;
-                if (Math.random() > 0.92) { // 8% chance of response
+                if (Math.random() > 0.92) {
                     showToast('📬 Response Received!', `${action.company.contact} replied to your email`);
                     state.responses++;
-                    if (Math.random() > 0.85) { // 15% chance of meeting after response
+                    if (Math.random() > 0.85) {
                         setTimeout(() => {
                             showToast('🎉 Meeting Booked!', `${action.company.contact} scheduled a meeting`);
                             state.meetings++;
                             updateStats();
                         }, 2000 / state.speed);
                     }
+                }
+            } else if (action.type === 'linkedin_comment') {
+                // After commenting, trigger connection request
+                setTimeout(() => {
+                    const connectAction = actions.find(a => a.type === 'linkedin_connect');
+                    state.currentAction = { ...connectAction, company: action.company };
+                    state.progress = 0;
+                    document.getElementById('actionIcon').textContent = connectAction.icon;
+                    document.getElementById('actionTitle').textContent = connectAction.title;
+                    setTimeout(() => completeAction(), 5000 / state.speed);
+                }, 3000 / state.speed);
+                return; // Don't go to next action yet
+            } else if (action.type === 'linkedin_connect') {
+                showToast('🤝 Connection Accepted!', `${action.company.contact} accepted your request`);
+                // After connection accepted, send message
+                setTimeout(() => {
+                    const messageAction = actions.find(a => a.type === 'linkedin_message');
+                    state.currentAction = { ...messageAction, company: action.company };
+                    state.progress = 0;
+                    document.getElementById('actionIcon').textContent = messageAction.icon;
+                    document.getElementById('actionTitle').textContent = messageAction.title;
+                    setTimeout(() => completeAction(), 4000 / state.speed);
+                }, 2000 / state.speed);
+                return;
+            } else if (action.type === 'linkedin_message') {
+                if (Math.random() > 0.90) {
+                    showToast('💬 LinkedIn Reply!', `${action.company.contact} responded to your message`);
+                    state.responses++;
                 }
             }
 
@@ -807,13 +890,44 @@
         function addActivity(action) {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            const company = action.company;
+
+            let preview = '';
+            let className = 'activity-item';
+
+            // Generate preview text for LinkedIn actions
+            if (action.type === 'linkedin_comment') {
+                const topic = linkedinTopics[Math.floor(Math.random() * linkedinTopics.length)];
+                const template = linkedinComments[Math.floor(Math.random() * linkedinComments.length)];
+                preview = template
+                    .replace('{topic}', topic)
+                    .replace('{contact}', company.contact.split(' ')[0])
+                    .replace('{industry}', company.industry);
+                className += ' linkedin';
+            } else if (action.type === 'linkedin_connect') {
+                preview = `Hi ${company.contact.split(' ')[0]}, I noticed we're both in the ${company.industry} space. Would love to connect!`;
+                className += ' linkedin';
+            } else if (action.type === 'linkedin_message') {
+                const topic = linkedinTopics[Math.floor(Math.random() * linkedinTopics.length)];
+                const template = linkedinMessages[Math.floor(Math.random() * linkedinMessages.length)];
+                preview = template
+                    .replace('{contact}', company.contact.split(' ')[0])
+                    .replace('{topic}', topic)
+                    .replace('{industry}', company.industry)
+                    .replace('{company}', company.name)
+                    .replace('{link}', 'atlas-sales-employee.vercel.app/demo-landing.html');
+                className += ' linkedin';
+            }
+
+            const previewHTML = preview ? `<div class="activity-preview">"${preview}"</div>` : '';
 
             const activityHTML = `
-                <div class="activity-item">
+                <div class="${className}">
                     <div class="activity-icon">${action.icon}</div>
                     <div class="activity-content">
                         <div class="activity-title">${action.title}</div>
-                        <div class="activity-subtitle">${action.company.name} — ${action.company.contact}</div>
+                        <div class="activity-subtitle">${company.name} — ${company.contact}</div>
+                        ${previewHTML}
                         <div class="activity-time">Just now • ${timeStr}</div>
                     </div>
                 </div>
