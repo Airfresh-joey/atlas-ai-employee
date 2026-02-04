@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS - AI Sales Employee</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 500px 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        /* Widget Styles */
+        .atlas-widget {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #2a2a4e;
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #2a2a4e;
+        }
+        
+        .header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .status-badge {
+            background: #10b981;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .current-action {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        
+        .action-title {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        
+        .action-content {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        
+        /* Chat Panel Styles */
+        .chat-panel {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #2a2a4e;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px);
+        }
+        
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #2a2a4e;
+        }
+        
+        .chat-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .chat-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+        
+        .message.user {
+            margin-left: auto;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .message-content {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .message-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .chat-input-area {
+            padding: 20px 24px;
+            border-top: 1px solid #2a2a4e;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-action:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 14px;
+            resize: none;
+            font-family: inherit;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 12px;
+        }
+        
+        .typing-indicator.active {
+            display: flex;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        .landing-preview {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .landing-preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .landing-preview-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .landing-preview-link {
+            color: #3b82f6;
+            font-size: 12px;
+            text-decoration: none;
+            padding: 4px 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+        }
+
+        .landing-preview-link:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .landing-preview-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Widget Panel -->
+        <div class="atlas-widget">
+            <div class="header">
+                <div>
+                    <h2>🤖 ATLAS</h2>
+                    <div style="color: #94a3b8; font-size: 13px; margin-top: 8px;">AI Sales Employee</div>
+                </div>
+                <div class="status-badge">ACTIVE</div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label">📊 Prospects</div>
+                    <div class="stat-value" id="prospects">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">📧 Emails</div>
+                    <div class="stat-value" id="emails">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">💬 Responses</div>
+                    <div class="stat-value" id="responses">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">📅 Meetings</div>
+                    <div class="stat-value" id="meetings">0</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 12px;">
+                🔄 CURRENT ACTION
+            </div>
+            <div class="current-action">
+                <div class="action-title" id="actionTitle">Waiting for instructions</div>
+                <div class="action-content" id="actionContent">Ready to start prospecting when you define your targets</div>
+            </div>
+        </div>
+
+        <!-- Chat Panel -->
+        <div class="chat-panel">
+            <div class="chat-header">
+                <div class="chat-title">💬 Chat with ATLAS</div>
+                <div class="chat-subtitle">Configure targeting, upload docs, manage campaigns</div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Hey! I'm ATLAS, your AI sales employee. I can help you:
+                            <br><br>
+                            • Research and qualify prospects<br>
+                            • Generate personalized landing pages<br>
+                            • Send targeted outreach emails<br>
+                            • Track engagement and book meetings
+                            <br><br>
+                            To get started, tell me about your company and who you're targeting!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+                <span>ATLAS is thinking...</span>
+            </div>
+            
+            <div class="chat-input-area">
+                <div class="quick-actions">
+                    <button class="quick-action" onclick="quickAction('Upload company docs')">📄 Upload Docs</button>
+                    <button class="quick-action" onclick="quickAction('Define target ICP')">🎯 Set Target ICP</button>
+                    <button class="quick-action" onclick="quickAction('Show sample prospect')">👤 Sample Prospect</button>
+                    <button class="quick-action" onclick="quickAction('Generate landing page')">🌐 Generate Page</button>
+                </div>
+                <div class="input-container">
+                    <textarea 
+                        class="chat-input" 
+                        id="chatInput" 
+                        placeholder="Type your message..."
+                        rows="1"
+                        onkeydown="handleEnter(event)"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let conversationHistory = [];
+        let knowledgeBase = {
+            company: "Air Fresh Marketing",
+            services: "Marketing services for colleges and universities",
+            targetICPs: []
+        };
+
+        function quickAction(action) {
+            document.getElementById('chatInput').value = action;
+            sendMessage();
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            document.getElementById('typingIndicator').classList.add('active');
+            
+            // Simulate AI response (in production, this would call Claude API)
+            setTimeout(() => {
+                handleUserMessage(message);
+            }, 1500);
+        }
+
+        function addMessage(role, text, extraContent = null) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${role === 'user' ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    <div class="message-text">${text}</div>
+                    ${extraContent || ''}
+                </div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function handleUserMessage(message) {
+            document.getElementById('typingIndicator').classList.remove('active');
+            
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('upload') || lowerMessage.includes('docs') || lowerMessage.includes('documents')) {
+                addMessage('assistant', `Great! Let me help you set up your company knowledge base. Tell me about:
+
+1. Your company name and what you do
+2. Your main services/products
+3. Your ideal customer profile (ICP)
+4. Key differentiators
+
+You can paste text directly or describe it to me!`);
+                updateAction('Learning', 'Gathering company information');
+            }
+            else if (lowerMessage.includes('target') || lowerMessage.includes('icp')) {
+                addMessage('assistant', `Perfect! Let's define your target ICP. Tell me:
+
+• Industry (e.g., Construction, Healthcare, Tech)
+• Company size (employees or revenue)
+• Location (city, state, region)
+• Pain points you solve
+• Decision makers you target
+
+Example: "We target construction companies with 100-500 employees in Colorado who need better marketing"
+
+What's your target?`);
+                updateAction('Configuring', 'Setting up target ICP parameters');
+            }
+            else if (lowerMessage.includes('sample') || lowerMessage.includes('prospect')) {
+                const sampleProspect = generateSampleProspect();
+                addMessage('assistant', sampleProspect.message, sampleProspect.landingPage);
+                updateAction('Researching', sampleProspect.companyName);
+                updateStats(1, 0, 0, 0);
+            }
+            else if (lowerMessage.includes('landing') || lowerMessage.includes('page') || lowerMessage.includes('generate')) {
+                const landing = generateLandingPage();
+                addMessage('assistant', landing.message, landing.preview);
+                updateAction('Generating', 'Personalized landing page for prospect');
+                updateStats(1, 1, 0, 0);
+            }
+            else if (lowerMessage.includes('construction') || lowerMessage.includes('colorado') || lowerMessage.includes('denver')) {
+                knowledgeBase.targetICPs.push({
+                    industry: 'Construction',
+                    location: 'Colorado',
+                    size: '100-500 employees'
+                });
+                addMessage('assistant', `Excellent! I've configured targeting for:
+
+🎯 **Target ICP:**
+• Industry: Construction
+• Location: Colorado (Denver metro area)
+• Size: 100-500 employees
+• Pain Points: Marketing, lead generation, brand awareness
+
+I'm now ready to start prospecting! I'll:
+
+1. Research construction companies in Colorado
+2. Generate personalized landing pages for each
+3. Send targeted outreach emails
+4. Track engagement and book meetings
+
+Want me to show you a sample prospect?`);
+                updateAction('Configured', 'Ready to start prospecting');
+            }
+            else {
+                addMessage('assistant', `I understand you're asking about: "${message}"
+
+I can help you with:
+• Setting up your company knowledge base
+• Defining target ICPs
+• Researching prospects
+• Generating personalized landing pages
+• Sending outreach campaigns
+
+What would you like to start with?`);
+            }
+        }
+
+        function generateSampleProspect() {
+            return {
+                companyName: 'Apex Construction LLC',
+                message: `Found a great prospect! Here's what I learned:
+
+**🏗️ Apex Construction LLC**
+• Location: Denver, CO
+• Size: 150 employees
+• Industry: Commercial Construction
+• Revenue: ~$45M/year
+
+**Pain Points Identified:**
+• Limited online presence (outdated website)
+• No active social media marketing
+• Competing with larger firms for contracts
+• Need to build brand awareness in Denver metro
+
+**Decision Maker:**
+• Michael Rodriguez, COO
+• Previously worked at major construction firms
+• Active on LinkedIn, interested in business growth
+
+**Recommended Action:**
+Generate personalized landing page highlighting how we've helped similar construction firms increase visibility and win more bids.
+
+Want me to generate their custom landing page?`,
+                landingPage: null
+            };
+        }
+
+        function generateLandingPage() {
+            const url = 'atlas-sales-employee.vercel.app/p/apex-construction';
+            return {
+                message: `✅ Generated personalized landing page for Apex Construction!`,
+                preview: `
+                    <div class="landing-preview">
+                        <div class="landing-preview-header">
+                            <div class="landing-preview-title">🌐 Landing Page Generated</div>
+                            <a href="#" class="landing-preview-link" onclick="alert('In production, this would open: https://${url}'); return false;">View Live →</a>
+                        </div>
+                        <div class="landing-preview-content">
+                            <strong>Apex Construction: Stop Losing Bids to Competitors</strong><br><br>
+                            
+                            We help commercial construction firms in Denver increase visibility and win 30% more contracts through targeted marketing.<br><br>
+                            
+                            <strong>What We'll Do For You:</strong><br>
+                            ✓ Build modern, mobile-first website<br>
+                            ✓ LinkedIn & social media presence<br>
+                            ✓ SEO for "commercial construction Denver"<br>
+                            ✓ Case studies & portfolio showcase<br><br>
+                            
+                            <strong>CTA:</strong> Book a 15-min strategy call →<br>
+                            <em style="font-size: 11px; color: #94a3b8;">URL: https://${url}</em>
+                        </div>
+                    </div>
+                `
+            };
+        }
+
+        function updateAction(title, content) {
+            document.getElementById('actionTitle').textContent = title;
+            document.getElementById('actionContent').textContent = content;
+        }
+
+        function updateStats(prospects, emails, responses, meetings) {
+            if (prospects > 0) document.getElementById('prospects').textContent = prospects;
+            if (emails > 0) document.getElementById('emails').textContent = emails;
+            if (responses > 0) document.getElementById('responses').textContent = responses;
+            if (meetings > 0) document.getElementById('meetings').textContent = meetings;
+        }
+    </script>
+</body>
+</html>
