@@ -3,538 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATLAS - AI Sales Employee</title>
+    <title>ATLAS - AI Sales Employee (LIVE DEMO)</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0e27;
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #ffffff;
             overflow-x: hidden;
         }
-        
+
         .container {
             display: grid;
-            grid-template-columns: 500px 1fr;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
+            grid-template-columns: 450px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1800px;
             margin: 0 auto;
             min-height: 100vh;
         }
-        
-        /* Widget Styles */
-        .atlas-widget {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid #2a2a4e;
+
+        /* WIDGET STYLES */
+        .widget {
+            background: #1e2139;
             border-radius: 16px;
-            padding: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             height: fit-content;
             position: sticky;
-            top: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            top: 2rem;
         }
-        
-        .header {
+
+        .widget-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #2a2a4e;
+            margin-bottom: 2rem;
         }
-        
-        .header h2 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        
-        .status-badge {
-            background: #10b981;
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
+
+        .widget-title {
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s;
+            gap: 0.75rem;
         }
-        
-        .status-badge.paused {
-            background: #f59e0b;
-        }
-        
-        .status-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        .status-badge.paused::before {
-            animation: none;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        .uptime {
-            color: #94a3b8;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 16px;
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            background: rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        
-        .stat-label {
-            color: #94a3b8;
-            font-size: 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .stat-value {
-            font-size: 28px;
+
+        .widget-title h2 {
+            font-size: 1.5rem;
             font-weight: 700;
         }
-        
-        .activity-section {
-            margin-top: 20px;
+
+        .widget-title .icon {
+            font-size: 2rem;
         }
-        
-        .section-title {
-            font-size: 14px;
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #94a3b8;
-            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge.active {
+            background: rgba(72, 187, 120, 0.2);
+            color: #48bb78;
+        }
+
+        .status-badge.paused {
+            background: rgba(246, 173, 85, 0.2);
+            color: #f6ad55;
+        }
+
+        .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .uptime {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #a0aec0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .current-action {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            transition: all 0.3s;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
-        
-        .current-action.paused {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
+
+        .current-action h3 {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
         }
-        
-        .action-title {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-        
+
         .action-content {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
-        
+
+        .action-icon {
+            font-size: 1.5rem;
+        }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-subtitle {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
             overflow: hidden;
         }
-        
+
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            border-radius: 3px;
-            transition: width 0.5s ease-out;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            transition: width 0.3s ease;
         }
-        
-        .next-action {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .next-action-text {
-            font-size: 14px;
-        }
-        
-        .next-action-time {
-            color: #94a3b8;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        
-        .eta {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
+
         .controls {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
         }
-        
+
         .btn {
-            flex: 1;
-            padding: 12px;
+            padding: 0.875rem 1.25rem;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: #fff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
         }
-        
+
         .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
         }
-        
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
+
+        .btn-pause {
+            background: rgba(246, 173, 85, 0.2);
+            color: #f6ad55;
+            border: 1px solid rgba(246, 173, 85, 0.3);
         }
-        
-        .btn-danger:hover {
-            background: rgba(239, 68, 68, 0.3);
+
+        .btn-pause:hover {
+            background: rgba(246, 173, 85, 0.3);
         }
-        
-        .btn-warning {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
+
+        .btn-resume {
+            background: rgba(72, 187, 120, 0.2);
+            color: #48bb78;
+            border: 1px solid rgba(72, 187, 120, 0.3);
         }
-        
-        .btn-warning:hover {
-            background: rgba(245, 158, 11, 0.3);
+
+        .btn-resume:hover {
+            background: rgba(72, 187, 120, 0.3);
         }
-        
-        /* Chat Panel Styles */
-        .chat-panel {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid #2a2a4e;
+
+        /* ACTIVITY FEED STYLES */
+        .activity-section {
+            background: #1e2139;
             border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-header {
             display: flex;
-            flex-direction: column;
-            height: calc(100vh - 40px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
         }
-        
-        .chat-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid #2a2a4e;
+
+        .activity-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
-        
-        .chat-title {
-            font-size: 18px;
+
+        .speed-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .speed-label {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-right: 0.5rem;
+        }
+
+        .speed-btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #a0aec0;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        
-        .chat-subtitle {
-            font-size: 13px;
-            color: #94a3b8;
+
+        .speed-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
         }
-        
-        .chat-messages {
-            flex: 1;
+
+        .speed-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .activity-feed {
+            max-height: 600px;
             overflow-y: auto;
-            padding: 20px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            padding-right: 1rem;
         }
-        
-        .message {
-            display: flex;
-            gap: 12px;
-            max-width: 80%;
-            animation: slideIn 0.3s ease-out;
+
+        .activity-feed::-webkit-scrollbar {
+            width: 8px;
         }
-        
+
+        .activity-feed::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .activity-feed::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 4px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideIn 0.3s ease;
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(-10px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        .message.user {
-            margin-left: auto;
-            flex-direction: row-reverse;
-        }
-        
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+
+        .activity-icon {
+            font-size: 1.5rem;
             flex-shrink: 0;
         }
-        
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-        }
-        
-        .message.assistant .message-avatar {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-        
-        .message-content {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-        }
-        
-        .message.user .message-content {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-        
-        .message-text {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .chat-input-area {
-            padding: 20px 24px;
-            border-top: 1px solid #2a2a4e;
-        }
-        
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .quick-action {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #3b82f6;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .quick-action:hover {
-            background: rgba(59, 130, 246, 0.2);
-            transform: translateY(-1px);
-        }
-        
-        .input-container {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .chat-input {
+
+        .activity-content {
             flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-            color: #fff;
-            font-size: 14px;
-            resize: none;
-            font-family: inherit;
         }
-        
-        .chat-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-        
-        .send-btn {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border: none;
-            border-radius: 12px;
-            padding: 12px 24px;
-            color: #fff;
+
+        .activity-title {
+            font-size: 0.95rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .send-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            color: #94a3b8;
-            font-size: 13px;
-            padding: 12px;
-        }
-        
-        .typing-indicator.active {
-            display: flex;
-        }
-        
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-        
-        .typing-dot {
-            width: 6px;
-            height: 6px;
-            background: #94a3b8;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes typing {
-            0%, 60%, 100% { opacity: 0.3; }
-            30% { opacity: 1; }
+            margin-bottom: 0.25rem;
         }
 
-        .landing-preview {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 12px;
+        .activity-subtitle {
+            font-size: 0.85rem;
+            color: #a0aec0;
         }
 
-        .landing-preview-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
+        .activity-time {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 0.25rem;
         }
 
-        .landing-preview-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #10b981;
-        }
-
-        .landing-preview-link {
-            color: #3b82f6;
-            font-size: 12px;
-            text-decoration: none;
-            padding: 4px 8px;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 6px;
-        }
-
-        .landing-preview-link:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-
-        .landing-preview-content {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #cbd5e1;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-            display: none;
-            z-index: 2000;
-            animation: slideInRight 0.3s ease-out;
-        }
-
-        .notification.active {
-            display: block;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -542,537 +376,563 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
             align-items: center;
             justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
         }
-        
+
         .modal.active {
             display: flex;
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 1px solid #2a2a4e;
+            background: #1e2139;
             border-radius: 16px;
-            padding: 24px;
-            max-width: 600px;
+            padding: 2rem;
+            max-width: 900px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.3s ease;
         }
-        
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .modal-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #2a2a4e;
+            justify-content: space-between;
+            margin-bottom: 2rem;
         }
-        
-        .modal-title {
-            font-size: 20px;
-            font-weight: 600;
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
-        
+
         .close-btn {
             background: none;
             border: none;
-            color: #94a3b8;
-            font-size: 24px;
+            color: #a0aec0;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
+            padding: 0.5rem;
+            line-height: 1;
         }
-        
+
         .close-btn:hover {
-            color: #fff;
+            color: white;
         }
-        
+
+        .pipeline-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
         .pipeline-item {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
+            padding: 1.5rem;
         }
-        
-        .pipeline-item-header {
+
+        .pipeline-header {
             display: flex;
+            align-items: flex-start;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 1rem;
         }
-        
+
         .pipeline-company {
+            font-size: 1.1rem;
             font-weight: 600;
-            font-size: 15px;
+            margin-bottom: 0.25rem;
         }
-        
-        .pipeline-stage {
-            background: rgba(59, 130, 246, 0.2);
-            color: #3b82f6;
-            padding: 4px 10px;
+
+        .pipeline-contact {
+            font-size: 0.9rem;
+            color: #a0aec0;
+        }
+
+        .pipeline-status {
+            padding: 0.5rem 1rem;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
+        .pipeline-status.researching {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .pipeline-status.contacted {
+            background: rgba(72, 187, 120, 0.2);
+            color: #48bb78;
+        }
+
+        .pipeline-status.responded {
+            background: rgba(246, 173, 85, 0.2);
+            color: #f6ad55;
+        }
+
+        .pipeline-status.meeting {
+            background: rgba(159, 122, 234, 0.2);
+            color: #9f7aea;
+        }
+
         .pipeline-details {
-            color: #94a3b8;
-            font-size: 13px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .pipeline-detail {
+            font-size: 0.85rem;
+        }
+
+        .pipeline-detail-label {
+            color: #718096;
+            margin-bottom: 0.25rem;
+        }
+
+        .pipeline-detail-value {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #1e2139;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 2000;
+            animation: toastSlide 0.3s ease;
+        }
+
+        @keyframes toastSlide {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .widget {
+                position: relative;
+                top: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Widget Panel -->
-        <div class="atlas-widget">
-            <div class="header">
-                <div>
-                    <h2>🤖 ATLAS</h2>
-                    <div class="uptime" id="uptime">Uptime: 0 hours</div>
+        <!-- WIDGET -->
+        <div class="widget">
+            <div class="widget-header">
+                <div class="widget-title">
+                    <span class="icon">🤖</span>
+                    <h2>ATLAS</h2>
                 </div>
-                <div class="status-badge" id="statusBadge">ACTIVE</div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-label">📊 Prospects Today</div>
-                    <div class="stat-value" id="prospects">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">📧 Emails Sent</div>
-                    <div class="stat-value" id="emails">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">💬 Responses</div>
-                    <div class="stat-value" id="responses">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">📅 Meetings</div>
-                    <div class="stat-value" id="meetings">0</div>
+                <div class="status-badge active" id="statusBadge">
+                    <span class="dot"></span>
+                    <span id="statusText">ACTIVE</span>
                 </div>
             </div>
-            
-            <div class="activity-section">
-                <div class="section-title">🔄 CURRENT ACTION</div>
-                <div class="current-action" id="currentAction">
-                    <div class="action-title" id="actionTitle">Waiting for instructions</div>
-                    <div class="action-content" id="actionContent">Ready to start prospecting when you define your targets</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+
+            <div class="uptime" id="uptime">⏱️ Running for 47h 23m</div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="prospectsCount">0</div>
+                    <div class="stat-label">Prospects Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="emailsCount">0</div>
+                    <div class="stat-label">Emails Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="responsesCount">0</div>
+                    <div class="stat-label">Responses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="meetingsCount">0</div>
+                    <div class="stat-label">Meetings Booked</div>
+                </div>
+            </div>
+
+            <div class="current-action">
+                <h3>Current Action</h3>
+                <div class="action-content">
+                    <span class="action-icon" id="actionIcon">🔍</span>
+                    <div class="action-text">
+                        <div class="action-title" id="actionTitle">Researching prospect</div>
+                        <div class="action-subtitle" id="actionSubtitle">Loading...</div>
                     </div>
                 </div>
-                
-                <div class="section-title">⏭️ NEXT UP</div>
-                <div class="next-action">
-                    <div>
-                        <div class="next-action-text" id="nextAction">Configure your ICP to start</div>
-                        <div class="next-action-time" id="nextActionCompany">Click "Set Target ICP" to begin</div>
-                    </div>
-                    <div class="eta" id="eta">--</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                 </div>
             </div>
-            
+
             <div class="controls">
-                <button class="btn btn-primary" id="pipelineBtn">VIEW PIPELINE</button>
-                <button class="btn btn-secondary" id="settingsBtn">SETTINGS</button>
-                <button class="btn btn-danger" id="pauseBtn">PAUSE</button>
+                <button class="btn btn-primary" onclick="viewPipeline()">VIEW PIPELINE</button>
+                <button class="btn btn-secondary" onclick="showSettings()">SETTINGS</button>
+                <button class="btn btn-pause" id="pauseBtn" onclick="togglePause()">PAUSE</button>
             </div>
         </div>
 
-        <!-- Chat Panel -->
-        <div class="chat-panel">
-            <div class="chat-header">
-                <div class="chat-title">💬 Chat with ATLAS</div>
-                <div class="chat-subtitle">Configure targeting, upload docs, manage campaigns</div>
-            </div>
-            
-            <div class="chat-messages" id="chatMessages">
-                <div class="message assistant">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        <div class="message-text">
-                            Hey! I'm ATLAS, your AI sales employee. I can help you:
-                            <br><br>
-                            • Research and qualify prospects<br>
-                            • Generate personalized landing pages<br>
-                            • Send targeted outreach emails<br>
-                            • Track engagement and book meetings
-                            <br><br>
-                            To get started, tell me about your company and who you're targeting!
-                        </div>
-                    </div>
+        <!-- ACTIVITY FEED -->
+        <div class="activity-section">
+            <div class="activity-header">
+                <h2>🔥 Live Activity Feed</h2>
+                <div class="speed-controls">
+                    <span class="speed-label">Speed:</span>
+                    <button class="speed-btn active" onclick="setSpeed(1)">1x</button>
+                    <button class="speed-btn" onclick="setSpeed(2)">2x</button>
+                    <button class="speed-btn" onclick="setSpeed(5)">5x</button>
+                    <button class="speed-btn" onclick="setSpeed(10)">10x</button>
                 </div>
             </div>
-
-            <div class="typing-indicator" id="typingIndicator">
-                <div class="typing-dots">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-                <span>ATLAS is thinking...</span>
-            </div>
-            
-            <div class="chat-input-area">
-                <div class="quick-actions">
-                    <button class="quick-action" onclick="quickAction('Upload company docs')">📄 Upload Docs</button>
-                    <button class="quick-action" onclick="quickAction('Define target ICP')">🎯 Set Target ICP</button>
-                    <button class="quick-action" onclick="quickAction('Show sample prospect')">👤 Sample Prospect</button>
-                    <button class="quick-action" onclick="quickAction('Generate landing page')">🌐 Generate Page</button>
-                </div>
-                <div class="input-container">
-                    <textarea 
-                        class="chat-input" 
-                        id="chatInput" 
-                        placeholder="Type your message..."
-                        rows="1"
-                        onkeydown="handleEnter(event)"
-                    ></textarea>
-                    <button class="send-btn" onclick="sendMessage()">Send</button>
-                </div>
+            <div class="activity-feed" id="activityFeed">
+                <!-- Activity items will be added here -->
             </div>
         </div>
     </div>
 
-    <!-- Pipeline Modal -->
+    <!-- PIPELINE MODAL -->
     <div class="modal" id="pipelineModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">📊 Sales Pipeline</div>
-                <button class="close-btn" id="closeModal">×</button>
+                <h2>📊 Sales Pipeline</h2>
+                <button class="close-btn" onclick="closePipeline()">×</button>
             </div>
-            <div id="pipelineContent">
-                <div style="text-align: center; padding: 40px; color: #94a3b8;">
-                    No prospects yet. Configure your ICP to start prospecting!
-                </div>
+            <div class="pipeline-grid" id="pipelineGrid">
+                <!-- Pipeline items will be added here -->
             </div>
         </div>
     </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
-
     <script>
-        // Global state
-        let isPaused = false;
-        let isWorking = false;
-        let uptimeHours = 0;
-        let prospects = 0;
-        let emails = 0;
-        let responses = 0;
-        let meetings = 0;
-        let currentProgress = 0;
-        let pipelineProspects = [];
+        // State
+        let state = {
+            active: true,
+            speed: 1,
+            prospects: 26,
+            emails: 19,
+            responses: 3,
+            meetings: 1,
+            uptime: 47 * 60 + 23, // minutes
+            currentAction: null,
+            progress: 0,
+            activities: [],
+            pipeline: []
+        };
 
-        const actions = [
-            { title: "Researching", content: "\"Apex Construction LLC\" — Denver, CO", next: "Send email to Sarah Chen", nextCompany: "TechFlow Solutions (IT Services)", duration: 15000 },
-            { title: "Writing Email", content: "Personalizing outreach for Sarah Chen", next: "Research Green Energy Partners", nextCompany: "Renewable Energy • Boulder, CO", duration: 12000 },
-            { title: "Sending Email", content: "To: Sarah Chen @ TechFlow Solutions", next: "Follow up with Michael Torres", nextCompany: "Green Energy Partners", duration: 8000 },
-            { title: "Researching", content: "\"Green Energy Partners\" — Boulder, CO", next: "Schedule meeting with James Wilson", nextCompany: "Metro Finance Group", duration: 15000 }
+        // Prospect data
+        const companies = [
+            { name: "Apex Construction LLC", contact: "Mike Davis", industry: "Construction", employees: "150-200", stage: "researching" },
+            { name: "TechFlow Solutions", contact: "Sarah Chen", industry: "IT Services", employees: "50-100", stage: "contacted" },
+            { name: "Anslow Bryant", contact: "Jeremy Anslow", industry: "Construction", employees: "200-500", stage: "meeting" },
+            { name: "Precision Manufacturing", contact: "Lisa Martinez", industry: "Manufacturing", employees: "100-150", stage: "responded" },
+            { name: "Summit IT Services", contact: "David Kim", industry: "IT Services", employees: "75-125", stage: "researching" },
+            { name: "Urban Builders Co", contact: "Robert Thompson", industry: "Construction", employees: "180-220", stage: "contacted" },
+            { name: "DataTech Systems", contact: "Emily Wong", industry: "IT Services", employees: "60-90", stage: "researching" },
+            { name: "Skyline Construction", contact: "James Porter", industry: "Construction", employees: "250-300", stage: "responded" }
         ];
 
-        let currentActionIndex = 0;
+        const actions = [
+            { icon: "🔍", title: "Researching prospect", type: "research" },
+            { icon: "✍️", title: "Writing email", type: "write" },
+            { icon: "📧", title: "Sending email", type: "send" },
+            { icon: "🔄", title: "Following up", type: "followup" },
+            { icon: "📊", title: "Analyzing response", type: "analyze" },
+            { icon: "🌐", title: "Generating landing page", type: "webpage" }
+        ];
 
-        // Chat functionality
-        function quickAction(action) {
-            document.getElementById('chatInput').value = action;
-            sendMessage();
+        // Initialize
+        function init() {
+            state.pipeline = companies.slice(0, 5);
+            updateStats();
+            updateUptime();
+            nextAction();
+            setInterval(() => {
+                if (state.active) {
+                    state.uptime++;
+                    updateUptime();
+                }
+            }, 60000 / state.speed); // Update every minute (adjusted for speed)
         }
 
-        function handleEnter(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
+        // Update stats display
+        function updateStats() {
+            document.getElementById('prospectsCount').textContent = state.prospects;
+            document.getElementById('emailsCount').textContent = state.emails;
+            document.getElementById('responsesCount').textContent = state.responses;
+            document.getElementById('meetingsCount').textContent = state.meetings;
+        }
+
+        // Update uptime display
+        function updateUptime() {
+            const hours = Math.floor(state.uptime / 60);
+            const minutes = state.uptime % 60;
+            document.getElementById('uptime').textContent = `⏱️ Running for ${hours}h ${minutes}m`;
+        }
+
+        // Next action
+        function nextAction() {
+            if (!state.active) return;
+
+            // Pick random action and company
+            const action = actions[Math.floor(Math.random() * actions.length)];
+            const company = companies[Math.floor(Math.random() * companies.length)];
+
+            state.currentAction = { ...action, company };
+            state.progress = 0;
+
+            // Update UI
+            document.getElementById('actionIcon').textContent = action.icon;
+            document.getElementById('actionTitle').textContent = action.title;
+            document.getElementById('actionSubtitle').textContent = `${company.name} — ${company.industry}`;
+
+            // Animate progress
+            const duration = (8000 + Math.random() * 4000) / state.speed; // 8-12 seconds (adjusted for speed)
+            const interval = 50;
+            const increment = (100 / duration) * interval;
+
+            const progressInterval = setInterval(() => {
+                if (!state.active) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+
+                state.progress += increment;
+                document.getElementById('progressFill').style.width = Math.min(state.progress, 100) + '%';
+
+                if (state.progress >= 100) {
+                    clearInterval(progressInterval);
+                    completeAction();
+                }
+            }, interval);
+        }
+
+        // Complete action
+        function completeAction() {
+            const action = state.currentAction;
+            
+            // Add to activity feed
+            addActivity(action);
+
+            // Update stats based on action type
+            if (action.type === 'research') {
+                state.prospects++;
+                if (Math.random() > 0.4) { // 60% chance to send email after research
+                    setTimeout(() => nextAction(), 1000 / state.speed);
+                }
+            } else if (action.type === 'send') {
+                state.emails++;
+                if (Math.random() > 0.92) { // 8% chance of response
+                    showToast('📬 Response Received!', `${action.company.contact} replied to your email`);
+                    state.responses++;
+                    if (Math.random() > 0.85) { // 15% chance of meeting after response
+                        setTimeout(() => {
+                            showToast('🎉 Meeting Booked!', `${action.company.contact} scheduled a meeting`);
+                            state.meetings++;
+                            updateStats();
+                        }, 2000 / state.speed);
+                    }
+                }
             }
+
+            updateStats();
+
+            // Next action
+            setTimeout(() => nextAction(), (2000 + Math.random() * 3000) / state.speed);
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            addMessage('user', message);
-            input.value = '';
-            
-            document.getElementById('typingIndicator').classList.add('active');
-            
-            setTimeout(() => {
-                handleUserMessage(message);
-            }, 1500);
-        }
+        // Add activity to feed
+        function addActivity(action) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
-        function addMessage(role, text, extraContent = null) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${role}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${role === 'user' ? '👤' : '🤖'}</div>
-                <div class="message-content">
-                    <div class="message-text">${text}</div>
-                    ${extraContent || ''}
+            const activityHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">${action.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${action.title}</div>
+                        <div class="activity-subtitle">${action.company.name} — ${action.company.contact}</div>
+                        <div class="activity-time">Just now • ${timeStr}</div>
+                    </div>
                 </div>
             `;
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
 
-        function handleUserMessage(message) {
-            document.getElementById('typingIndicator').classList.remove('active');
-            
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('construction') || lowerMessage.includes('colorado') || lowerMessage.includes('denver') || lowerMessage.includes('icp') || lowerMessage.includes('target')) {
-                addMessage('assistant', `Excellent! I've configured targeting for:
+            const feed = document.getElementById('activityFeed');
+            feed.insertAdjacentHTML('afterbegin', activityHTML);
 
-🎯 **Target ICP:**
-• Industry: Construction
-• Location: Colorado (Denver metro area)
-• Size: 100-500 employees
-• Pain Points: Marketing, lead generation, brand awareness
-
-I'm now starting to prospect! Watch the widget update in real-time as I work.`);
-                
-                startWorking();
-            }
-            else if (lowerMessage.includes('sample') || lowerMessage.includes('prospect')) {
-                const sampleProspect = generateSampleProspect();
-                addMessage('assistant', sampleProspect.message);
-                addToPipeline('Apex Construction LLC', 'RESEARCHING', 'Denver, CO • Construction • 150 employees');
-            }
-            else if (lowerMessage.includes('landing') || lowerMessage.includes('page') || lowerMessage.includes('generate')) {
-                const landing = generateLandingPage();
-                addMessage('assistant', landing.message, landing.preview);
-            }
-            else {
-                addMessage('assistant', `I understand you're asking about: "${message}"
-
-I can help you with:
-• Setting up your company knowledge base
-• Defining target ICPs
-• Researching prospects
-• Generating personalized landing pages
-• Sending outreach campaigns
-
-Try clicking "Set Target ICP" to get started!`);
+            // Keep only last 50 activities
+            while (feed.children.length > 50) {
+                feed.removeChild(feed.lastChild);
             }
         }
 
-        function generateSampleProspect() {
-            return {
-                message: `Found a great prospect! Here's what I learned:
+        // Toggle pause
+        function togglePause() {
+            state.active = !state.active;
+            const statusBadge = document.getElementById('statusBadge');
+            const statusText = document.getElementById('statusText');
+            const pauseBtn = document.getElementById('pauseBtn');
 
-**🏗️ Apex Construction LLC**
-• Location: Denver, CO
-• Size: 150 employees
-• Industry: Commercial Construction
-• Revenue: ~$45M/year
-
-**Pain Points Identified:**
-• Limited online presence (outdated website)
-• No active social media marketing
-• Competing with larger firms for contracts
-• Need to build brand awareness in Denver metro
-
-**Decision Maker:**
-• Michael Rodriguez, COO
-• Previously worked at major construction firms
-• Active on LinkedIn, interested in business growth
-
-**Recommended Action:**
-Generate personalized landing page highlighting how we've helped similar construction firms increase visibility and win more bids.
-
-Click "Generate Landing Page" to see it!`
-            };
-        }
-
-        function generateLandingPage() {
-            const url = 'atlas-sales-employee.vercel.app/p/apex-construction.html';
-            return {
-                message: `✅ Generated personalized landing page for Apex Construction!`,
-                preview: `
-                    <div class="landing-preview">
-                        <div class="landing-preview-header">
-                            <div class="landing-preview-title">🌐 Landing Page Generated</div>
-                            <a href="https://${url}" target="_blank" class="landing-preview-link">View Live →</a>
-                        </div>
-                        <div class="landing-preview-content">
-                            <strong>Apex Construction: Stop Losing Bids to Competitors</strong><br><br>
-                            
-                            We help commercial construction firms in Denver increase visibility and win 30% more contracts through targeted marketing.<br><br>
-                            
-                            <strong>What We'll Do For You:</strong><br>
-                            ✓ Build modern, mobile-first website<br>
-                            ✓ LinkedIn & social media presence<br>
-                            ✓ SEO for "commercial construction Denver"<br>
-                            ✓ Case studies & portfolio showcase<br><br>
-                            
-                            <strong>CTA:</strong> Book a 15-min strategy call →
-                        </div>
-                    </div>
-                `
-            };
-        }
-
-        function addToPipeline(company, stage, details) {
-            pipelineProspects.push({ company, stage, details });
-            updatePipelineModal();
-        }
-
-        function updatePipelineModal() {
-            const content = document.getElementById('pipelineContent');
-            if (pipelineProspects.length === 0) {
-                content.innerHTML = '<div style="text-align: center; padding: 40px; color: #94a3b8;">No prospects yet. Configure your ICP to start prospecting!</div>';
+            if (state.active) {
+                statusBadge.className = 'status-badge active';
+                statusText.textContent = 'ACTIVE';
+                pauseBtn.className = 'btn btn-pause';
+                pauseBtn.textContent = 'PAUSE';
+                nextAction();
             } else {
-                content.innerHTML = pipelineProspects.map(p => `
-                    <div class="pipeline-item">
-                        <div class="pipeline-item-header">
-                            <div class="pipeline-company">${p.company}</div>
-                            <div class="pipeline-stage">${p.stage}</div>
-                        </div>
-                        <div class="pipeline-details">${p.details}</div>
-                    </div>
-                `).join('');
+                statusBadge.className = 'status-badge paused';
+                statusText.textContent = 'PAUSED';
+                pauseBtn.className = 'btn btn-resume';
+                pauseBtn.textContent = 'RESUME';
+                document.getElementById('progressFill').style.width = '0%';
+                document.getElementById('actionSubtitle').textContent = 'Work suspended by user';
             }
         }
 
-        // Live simulation
-        function startWorking() {
-            isWorking = true;
-            updateAction(actions[0].title, actions[0].content);
-            updateNextAction(actions[0].next, actions[0].nextCompany, '2 min');
-            simulateWork();
-            showNotification('🚀 ATLAS started working!');
-        }
-
-        function simulateWork() {
-            if (!isWorking || isPaused) return;
-
-            currentProgress += Math.random() * 3;
-            document.getElementById('progressFill').style.width = currentProgress + '%';
-
-            if (currentProgress >= 100) {
-                completeAction();
-            }
-
-            setTimeout(simulateWork, 1000);
-        }
-
-        function completeAction() {
-            currentProgress = 0;
+        // Set speed
+        function setSpeed(speed) {
+            state.speed = speed;
             
-            // Update stats randomly
-            if (Math.random() > 0.5) {
-                emails++;
-                document.getElementById('emails').textContent = emails;
-                showNotification('📧 Email sent successfully!');
-            }
-            if (Math.random() > 0.7) {
-                responses++;
-                document.getElementById('responses').textContent = responses;
-                showNotification('💬 Got a response!');
-            }
-            if (Math.random() > 0.9) {
-                meetings++;
-                document.getElementById('meetings').textContent = meetings;
-                showNotification('📅 Meeting scheduled!');
-            }
-
-            prospects++;
-            document.getElementById('prospects').textContent = prospects;
-
-            // Move to next action
-            currentActionIndex = (currentActionIndex + 1) % actions.length;
-            const action = actions[currentActionIndex];
-            updateAction(action.title, action.content);
-            updateNextAction(action.next, action.nextCompany, '2 min');
+            // Update button states
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
         }
 
-        function updateAction(title, content) {
-            document.getElementById('actionTitle').textContent = title;
-            document.getElementById('actionContent').textContent = content;
+        // View pipeline
+        function viewPipeline() {
+            const grid = document.getElementById('pipelineGrid');
+            grid.innerHTML = state.pipeline.map(company => `
+                <div class="pipeline-item">
+                    <div class="pipeline-header">
+                        <div>
+                            <div class="pipeline-company">${company.name}</div>
+                            <div class="pipeline-contact">${company.contact}</div>
+                        </div>
+                        <div class="pipeline-status ${company.stage}">${company.stage}</div>
+                    </div>
+                    <div class="pipeline-details">
+                        <div class="pipeline-detail">
+                            <div class="pipeline-detail-label">Industry</div>
+                            <div class="pipeline-detail-value">${company.industry}</div>
+                        </div>
+                        <div class="pipeline-detail">
+                            <div class="pipeline-detail-label">Employees</div>
+                            <div class="pipeline-detail-value">${company.employees}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('pipelineModal').classList.add('active');
         }
 
-        function updateNextAction(action, company, eta) {
-            document.getElementById('nextAction').textContent = action;
-            document.getElementById('nextActionCompany').textContent = company;
-            document.getElementById('eta').textContent = eta;
+        // Close pipeline
+        function closePipeline() {
+            document.getElementById('pipelineModal').classList.remove('active');
         }
 
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('active');
+        // Show settings
+        function showSettings() {
+            showToast('⚙️ Settings', 'Configuration panel coming soon');
+        }
+
+        // Show toast notification
+        function showToast(title, message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <div class="toast-icon">✨</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+
             setTimeout(() => {
-                notification.classList.remove('active');
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // Update uptime
-        setInterval(() => {
-            if (isWorking && !isPaused) {
-                uptimeHours++;
-                document.getElementById('uptime').textContent = `Uptime: ${uptimeHours} hours`;
-            }
-        }, 3600000); // Every hour
-
-        // Control buttons
-        document.getElementById('pauseBtn').addEventListener('click', () => {
-            isPaused = !isPaused;
-            const badge = document.getElementById('statusBadge');
-            const pauseBtn = document.getElementById('pauseBtn');
-            const currentAction = document.getElementById('currentAction');
-
-            if (isPaused) {
-                badge.textContent = 'PAUSED';
-                badge.classList.add('paused');
-                pauseBtn.textContent = 'RESUME';
-                pauseBtn.classList.remove('btn-danger');
-                pauseBtn.classList.add('btn-warning');
-                currentAction.classList.add('paused');
-                document.getElementById('actionTitle').textContent = 'Paused';
-                document.getElementById('actionContent').textContent = 'Work suspended by user';
-                showNotification('⏸️ ATLAS paused');
-            } else {
-                badge.textContent = 'ACTIVE';
-                badge.classList.remove('paused');
-                pauseBtn.textContent = 'PAUSE';
-                pauseBtn.classList.remove('btn-warning');
-                pauseBtn.classList.add('btn-danger');
-                currentAction.classList.remove('paused');
-                const action = actions[currentActionIndex];
-                document.getElementById('actionTitle').textContent = action.title;
-                document.getElementById('actionContent').textContent = action.content;
-                showNotification('▶️ ATLAS resumed');
-                if (isWorking) simulateWork();
-            }
-        });
-
-        document.getElementById('pipelineBtn').addEventListener('click', () => {
-            document.getElementById('pipelineModal').classList.add('active');
-        });
-
-        document.getElementById('closeModal').addEventListener('click', () => {
-            document.getElementById('pipelineModal').classList.remove('active');
-        });
-
+        // Close modal on outside click
         document.getElementById('pipelineModal').addEventListener('click', (e) => {
             if (e.target.id === 'pipelineModal') {
-                document.getElementById('pipelineModal').classList.remove('active');
+                closePipeline();
             }
         });
 
-        document.getElementById('settingsBtn').addEventListener('click', () => {
-            showNotification('⚙️ Settings panel coming soon!');
-        });
+        // Start
+        init();
+
+        // Welcome message
+        setTimeout(() => {
+            showToast('🚀 ATLAS is LIVE', 'AI Sales Employee is now operational');
+        }, 1000);
     </script>
 </body>
 </html>
