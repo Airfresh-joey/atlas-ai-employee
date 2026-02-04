@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sales Employees - Stop Losing Leads to Slow Follow-Up | Humming Agent</title>
+    <meta name="description" content="Your sales team can't work 24/7. ATLAS can. Automated prospecting, personalized outreach, and meeting booking that never sleeps.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #ffffff;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Problem Section */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #718096;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-text {
+            color: #718096;
+            line-height: 1.7;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-text {
+            color: #718096;
+            line-height: 1.7;
+        }
+
+        /* ROI Section */
+        .roi-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 2rem;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .roi-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .roi-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .roi-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Social Proof */
+        .testimonial {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .testimonial-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .author-info p {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: #f7fafc;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            background: transparent;
+            color: #667eea;
+            padding: 1.25rem 3rem;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a202c;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer p {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🤖 AI-Powered Sales Automation</div>
+            <h1>Your Sales Team Sleeps.<br>ATLAS Doesn't.</h1>
+            <p class="hero-subtitle">
+                Automated prospecting, personalized outreach, and meeting booking that runs 24/7.
+                Never lose another lead to slow follow-up.
+            </p>
+            <a href="https://hummingagent.ai/schedule-demo" class="cta-primary">
+                📅 Schedule a Demo →
+            </a>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">3,000+</div>
+                    <div class="stat-label">Prospects/Month</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">90+</div>
+                    <div class="stat-label">Meetings Booked</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Always Working</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-tag">The Problem</div>
+            <h2 class="section-title">Your Competition Is Eating Your Lunch</h2>
+            <p class="section-subtitle">
+                While you're manually prospecting, your competitors are using AI to work 24/7
+            </p>
+        </div>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon">⏰</div>
+                <h3 class="problem-title">Slow Follow-Up</h3>
+                <p class="problem-text">
+                    Your team takes 24-48 hours to follow up. By then, your prospect has already talked to 3 competitors.
+                </p>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">💸</div>
+                <h3 class="problem-title">Expensive SDRs</h3>
+                <p class="problem-text">
+                    Hiring SDRs costs $4K-6K/month + benefits, training, and management. And they still sleep 8 hours/day.
+                </p>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">📉</div>
+                <h3 class="problem-title">Inconsistent Outreach</h3>
+                <p class="problem-text">
+                    Manual prospecting means some leads get 10 touchpoints, others get zero. Your pipeline is a mess.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="section solution-section">
+        <div class="section-header">
+            <div class="section-tag">The Solution</div>
+            <h2 class="section-title">Meet ATLAS: Your AI Sales Employee</h2>
+            <p class="section-subtitle">
+                Autonomous sales agent that executes your playbook 24/7 without breaks, vacation, or sick days
+            </p>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature">
+                <div class="feature-icon">🔍</div>
+                <h3 class="feature-title">Intelligent Prospecting</h3>
+                <p class="feature-text">
+                    Finds qualified prospects on LinkedIn and Apollo based on your ICP. Researches company websites, news, and trigger events.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✍️</div>
+                <h3 class="feature-title">Personalized Outreach</h3>
+                <p class="feature-text">
+                    AI-generated emails and messages tailored to each prospect's industry, pain points, and recent activity.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Custom Landing Pages</h3>
+                <p class="feature-text">
+                    Every prospect gets a personalized landing page with their company name, industry-specific case studies, and calendar link.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3 class="feature-title">Automated Follow-Up</h3>
+                <p class="feature-text">
+                    Multi-touch sequences that adapt based on engagement. Responds to replies and schedules meetings automatically.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Live Dashboard</h3>
+                <p class="feature-text">
+                    Watch ATLAS work in real-time. See prospects researched, emails sent, responses received, and meetings booked.
+                </p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">CRM Integration</h3>
+                <p class="feature-text">
+                    Syncs with HubSpot, Salesforce, and Pipedrive. All prospect data and activities automatically logged.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="roi-section">
+        <div class="section-header">
+            <div class="section-tag" style="color: rgba(255,255,255,0.9);">ROI That Makes Sense</div>
+            <h2 class="section-title" style="color: white;">10x Your Pipeline for 1/3 the Cost</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">
+                ATLAS costs less than an SDR but works 10x harder
+            </p>
+        </div>
+
+        <div class="roi-grid">
+            <div class="roi-card">
+                <div class="roi-number">$2-5K</div>
+                <div class="roi-label">Monthly Cost</div>
+            </div>
+
+            <div class="roi-card">
+                <div class="roi-number">3,000+</div>
+                <div class="roi-label">Prospects/Month</div>
+            </div>
+
+            <div class="roi-card">
+                <div class="roi-number">90+</div>
+                <div class="roi-label">Meetings Booked</div>
+            </div>
+
+            <div class="roi-card">
+                <div class="roi-number">24/7</div>
+                <div class="roi-label">Always Working</div>
+            </div>
+        </div>
+
+        <div class="testimonial">
+            <p class="testimonial-text">
+                "We went from 15 meetings per month to 90+ with ATLAS. It's like having 10 SDRs working around the clock. 
+                Game changer for our pipeline."
+            </p>
+            <div class="testimonial-author">
+                <div class="author-avatar">JM</div>
+                <div class="author-info">
+                    <h4>Jason Martinez</h4>
+                    <p>VP of Sales, TechFlow Solutions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to 10x Your Pipeline?</h2>
+        <p>See ATLAS in action. Book a 15-minute demo and watch it work live.</p>
+        <div class="cta-buttons">
+            <a href="https://hummingagent.ai/schedule-demo" class="cta-primary">
+                📅 Schedule Your Demo
+            </a>
+            <a href="https://hummingagent.ai" class="cta-secondary">
+                Learn More
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Humming Agent AI. Built for sales teams that want to win.</p>
+    </footer>
+
+    <!-- Analytics Placeholder -->
+    <script>
+        // Track page view
+        console.log('Page view tracked: ATLAS Demo Landing Page');
+        
+        // Track CTA clicks
+        document.querySelectorAll('a[href*="schedule-demo"]').forEach(link => {
+            link.addEventListener('click', () => {
+                console.log('CTA clicked: Schedule Demo');
+            });
+        });
+    </script>
+</body>
+</html>
