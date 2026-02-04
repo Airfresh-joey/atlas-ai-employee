@@ -37,6 +37,7 @@
             height: fit-content;
             position: sticky;
             top: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         
         .header {
@@ -63,6 +64,11 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.3s;
+        }
+        
+        .status-badge.paused {
+            background: #f59e0b;
         }
         
         .status-badge::before {
@@ -74,9 +80,19 @@
             animation: pulse 2s infinite;
         }
         
+        .status-badge.paused::before {
+            animation: none;
+        }
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
+        }
+        
+        .uptime {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 8px;
         }
         
         .stats {
@@ -91,12 +107,21 @@
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             padding: 16px;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
         }
         
         .stat-label {
             color: #94a3b8;
             font-size: 12px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .stat-value {
@@ -104,12 +129,31 @@
             font-weight: 700;
         }
         
+        .activity-section {
+            margin-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
         .current-action {
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 12px;
             padding: 16px;
-            margin: 20px 0;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        
+        .current-action.paused {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
         }
         
         .action-title {
@@ -124,6 +168,104 @@
             margin-bottom: 12px;
         }
         
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
+            transition: width 0.5s ease-out;
+        }
+        
+        .next-action {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .next-action-text {
+            font-size: 14px;
+        }
+        
+        .next-action-time {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .eta {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .btn-warning:hover {
+            background: rgba(245, 158, 11, 0.3);
+        }
+        
         /* Chat Panel Styles */
         .chat-panel {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -132,6 +274,7 @@
             display: flex;
             flex-direction: column;
             height: calc(100vh - 40px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         
         .chat-header {
@@ -163,6 +306,18 @@
             display: flex;
             gap: 12px;
             max-width: 80%;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .message.user {
@@ -231,6 +386,7 @@
         
         .quick-action:hover {
             background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
         }
         
         .input-container {
@@ -348,6 +504,127 @@
             line-height: 1.6;
             color: #cbd5e1;
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            display: none;
+            z-index: 2000;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .notification.active {
+            display: block;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #2a2a4e;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #2a2a4e;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+        
+        .close-btn:hover {
+            color: #fff;
+        }
+        
+        .pipeline-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .pipeline-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .pipeline-company {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .pipeline-stage {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .pipeline-details {
+            color: #94a3b8;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -357,18 +634,18 @@
             <div class="header">
                 <div>
                     <h2>🤖 ATLAS</h2>
-                    <div style="color: #94a3b8; font-size: 13px; margin-top: 8px;">AI Sales Employee</div>
+                    <div class="uptime" id="uptime">Uptime: 0 hours</div>
                 </div>
-                <div class="status-badge">ACTIVE</div>
+                <div class="status-badge" id="statusBadge">ACTIVE</div>
             </div>
             
             <div class="stats">
                 <div class="stat-card">
-                    <div class="stat-label">📊 Prospects</div>
+                    <div class="stat-label">📊 Prospects Today</div>
                     <div class="stat-value" id="prospects">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">📧 Emails</div>
+                    <div class="stat-label">📧 Emails Sent</div>
                     <div class="stat-value" id="emails">0</div>
                 </div>
                 <div class="stat-card">
@@ -381,12 +658,30 @@
                 </div>
             </div>
             
-            <div style="margin-top: 20px; font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 12px;">
-                🔄 CURRENT ACTION
+            <div class="activity-section">
+                <div class="section-title">🔄 CURRENT ACTION</div>
+                <div class="current-action" id="currentAction">
+                    <div class="action-title" id="actionTitle">Waiting for instructions</div>
+                    <div class="action-content" id="actionContent">Ready to start prospecting when you define your targets</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="section-title">⏭️ NEXT UP</div>
+                <div class="next-action">
+                    <div>
+                        <div class="next-action-text" id="nextAction">Configure your ICP to start</div>
+                        <div class="next-action-time" id="nextActionCompany">Click "Set Target ICP" to begin</div>
+                    </div>
+                    <div class="eta" id="eta">--</div>
+                </div>
             </div>
-            <div class="current-action">
-                <div class="action-title" id="actionTitle">Waiting for instructions</div>
-                <div class="action-content" id="actionContent">Ready to start prospecting when you define your targets</div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" id="pipelineBtn">VIEW PIPELINE</button>
+                <button class="btn btn-secondary" id="settingsBtn">SETTINGS</button>
+                <button class="btn btn-danger" id="pauseBtn">PAUSE</button>
             </div>
         </div>
 
@@ -445,14 +740,46 @@
         </div>
     </div>
 
-    <script>
-        let conversationHistory = [];
-        let knowledgeBase = {
-            company: "Air Fresh Marketing",
-            services: "Marketing services for colleges and universities",
-            targetICPs: []
-        };
+    <!-- Pipeline Modal -->
+    <div class="modal" id="pipelineModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">📊 Sales Pipeline</div>
+                <button class="close-btn" id="closeModal">×</button>
+            </div>
+            <div id="pipelineContent">
+                <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                    No prospects yet. Configure your ICP to start prospecting!
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Global state
+        let isPaused = false;
+        let isWorking = false;
+        let uptimeHours = 0;
+        let prospects = 0;
+        let emails = 0;
+        let responses = 0;
+        let meetings = 0;
+        let currentProgress = 0;
+        let pipelineProspects = [];
+
+        const actions = [
+            { title: "Researching", content: "\"Apex Construction LLC\" — Denver, CO", next: "Send email to Sarah Chen", nextCompany: "TechFlow Solutions (IT Services)", duration: 15000 },
+            { title: "Writing Email", content: "Personalizing outreach for Sarah Chen", next: "Research Green Energy Partners", nextCompany: "Renewable Energy • Boulder, CO", duration: 12000 },
+            { title: "Sending Email", content: "To: Sarah Chen @ TechFlow Solutions", next: "Follow up with Michael Torres", nextCompany: "Green Energy Partners", duration: 8000 },
+            { title: "Researching", content: "\"Green Energy Partners\" — Boulder, CO", next: "Schedule meeting with James Wilson", nextCompany: "Metro Finance Group", duration: 15000 }
+        ];
+
+        let currentActionIndex = 0;
+
+        // Chat functionality
         function quickAction(action) {
             document.getElementById('chatInput').value = action;
             sendMessage();
@@ -471,14 +798,11 @@
             
             if (!message) return;
             
-            // Add user message
             addMessage('user', message);
             input.value = '';
             
-            // Show typing indicator
             document.getElementById('typingIndicator').classList.add('active');
             
-            // Simulate AI response (in production, this would call Claude API)
             setTimeout(() => {
                 handleUserMessage(message);
             }, 1500);
@@ -506,49 +830,7 @@
             
             const lowerMessage = message.toLowerCase();
             
-            if (lowerMessage.includes('upload') || lowerMessage.includes('docs') || lowerMessage.includes('documents')) {
-                addMessage('assistant', `Great! Let me help you set up your company knowledge base. Tell me about:
-
-1. Your company name and what you do
-2. Your main services/products
-3. Your ideal customer profile (ICP)
-4. Key differentiators
-
-You can paste text directly or describe it to me!`);
-                updateAction('Learning', 'Gathering company information');
-            }
-            else if (lowerMessage.includes('target') || lowerMessage.includes('icp')) {
-                addMessage('assistant', `Perfect! Let's define your target ICP. Tell me:
-
-• Industry (e.g., Construction, Healthcare, Tech)
-• Company size (employees or revenue)
-• Location (city, state, region)
-• Pain points you solve
-• Decision makers you target
-
-Example: "We target construction companies with 100-500 employees in Colorado who need better marketing"
-
-What's your target?`);
-                updateAction('Configuring', 'Setting up target ICP parameters');
-            }
-            else if (lowerMessage.includes('sample') || lowerMessage.includes('prospect')) {
-                const sampleProspect = generateSampleProspect();
-                addMessage('assistant', sampleProspect.message, sampleProspect.landingPage);
-                updateAction('Researching', sampleProspect.companyName);
-                updateStats(1, 0, 0, 0);
-            }
-            else if (lowerMessage.includes('landing') || lowerMessage.includes('page') || lowerMessage.includes('generate')) {
-                const landing = generateLandingPage();
-                addMessage('assistant', landing.message, landing.preview);
-                updateAction('Generating', 'Personalized landing page for prospect');
-                updateStats(1, 1, 0, 0);
-            }
-            else if (lowerMessage.includes('construction') || lowerMessage.includes('colorado') || lowerMessage.includes('denver')) {
-                knowledgeBase.targetICPs.push({
-                    industry: 'Construction',
-                    location: 'Colorado',
-                    size: '100-500 employees'
-                });
+            if (lowerMessage.includes('construction') || lowerMessage.includes('colorado') || lowerMessage.includes('denver') || lowerMessage.includes('icp') || lowerMessage.includes('target')) {
                 addMessage('assistant', `Excellent! I've configured targeting for:
 
 🎯 **Target ICP:**
@@ -557,15 +839,18 @@ What's your target?`);
 • Size: 100-500 employees
 • Pain Points: Marketing, lead generation, brand awareness
 
-I'm now ready to start prospecting! I'll:
-
-1. Research construction companies in Colorado
-2. Generate personalized landing pages for each
-3. Send targeted outreach emails
-4. Track engagement and book meetings
-
-Want me to show you a sample prospect?`);
-                updateAction('Configured', 'Ready to start prospecting');
+I'm now starting to prospect! Watch the widget update in real-time as I work.`);
+                
+                startWorking();
+            }
+            else if (lowerMessage.includes('sample') || lowerMessage.includes('prospect')) {
+                const sampleProspect = generateSampleProspect();
+                addMessage('assistant', sampleProspect.message);
+                addToPipeline('Apex Construction LLC', 'RESEARCHING', 'Denver, CO • Construction • 150 employees');
+            }
+            else if (lowerMessage.includes('landing') || lowerMessage.includes('page') || lowerMessage.includes('generate')) {
+                const landing = generateLandingPage();
+                addMessage('assistant', landing.message, landing.preview);
             }
             else {
                 addMessage('assistant', `I understand you're asking about: "${message}"
@@ -577,13 +862,12 @@ I can help you with:
 • Generating personalized landing pages
 • Sending outreach campaigns
 
-What would you like to start with?`);
+Try clicking "Set Target ICP" to get started!`);
             }
         }
 
         function generateSampleProspect() {
             return {
-                companyName: 'Apex Construction LLC',
                 message: `Found a great prospect! Here's what I learned:
 
 **🏗️ Apex Construction LLC**
@@ -606,20 +890,19 @@ What would you like to start with?`);
 **Recommended Action:**
 Generate personalized landing page highlighting how we've helped similar construction firms increase visibility and win more bids.
 
-Want me to generate their custom landing page?`,
-                landingPage: null
+Click "Generate Landing Page" to see it!`
             };
         }
 
         function generateLandingPage() {
-            const url = 'atlas-sales-employee.vercel.app/p/apex-construction';
+            const url = 'atlas-sales-employee.vercel.app/p/apex-construction.html';
             return {
                 message: `✅ Generated personalized landing page for Apex Construction!`,
                 preview: `
                     <div class="landing-preview">
                         <div class="landing-preview-header">
                             <div class="landing-preview-title">🌐 Landing Page Generated</div>
-                            <a href="#" class="landing-preview-link" onclick="alert('In production, this would open: https://${url}'); return false;">View Live →</a>
+                            <a href="https://${url}" target="_blank" class="landing-preview-link">View Live →</a>
                         </div>
                         <div class="landing-preview-content">
                             <strong>Apex Construction: Stop Losing Bids to Competitors</strong><br><br>
@@ -632,12 +915,85 @@ Want me to generate their custom landing page?`,
                             ✓ SEO for "commercial construction Denver"<br>
                             ✓ Case studies & portfolio showcase<br><br>
                             
-                            <strong>CTA:</strong> Book a 15-min strategy call →<br>
-                            <em style="font-size: 11px; color: #94a3b8;">URL: https://${url}</em>
+                            <strong>CTA:</strong> Book a 15-min strategy call →
                         </div>
                     </div>
                 `
             };
+        }
+
+        function addToPipeline(company, stage, details) {
+            pipelineProspects.push({ company, stage, details });
+            updatePipelineModal();
+        }
+
+        function updatePipelineModal() {
+            const content = document.getElementById('pipelineContent');
+            if (pipelineProspects.length === 0) {
+                content.innerHTML = '<div style="text-align: center; padding: 40px; color: #94a3b8;">No prospects yet. Configure your ICP to start prospecting!</div>';
+            } else {
+                content.innerHTML = pipelineProspects.map(p => `
+                    <div class="pipeline-item">
+                        <div class="pipeline-item-header">
+                            <div class="pipeline-company">${p.company}</div>
+                            <div class="pipeline-stage">${p.stage}</div>
+                        </div>
+                        <div class="pipeline-details">${p.details}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Live simulation
+        function startWorking() {
+            isWorking = true;
+            updateAction(actions[0].title, actions[0].content);
+            updateNextAction(actions[0].next, actions[0].nextCompany, '2 min');
+            simulateWork();
+            showNotification('🚀 ATLAS started working!');
+        }
+
+        function simulateWork() {
+            if (!isWorking || isPaused) return;
+
+            currentProgress += Math.random() * 3;
+            document.getElementById('progressFill').style.width = currentProgress + '%';
+
+            if (currentProgress >= 100) {
+                completeAction();
+            }
+
+            setTimeout(simulateWork, 1000);
+        }
+
+        function completeAction() {
+            currentProgress = 0;
+            
+            // Update stats randomly
+            if (Math.random() > 0.5) {
+                emails++;
+                document.getElementById('emails').textContent = emails;
+                showNotification('📧 Email sent successfully!');
+            }
+            if (Math.random() > 0.7) {
+                responses++;
+                document.getElementById('responses').textContent = responses;
+                showNotification('💬 Got a response!');
+            }
+            if (Math.random() > 0.9) {
+                meetings++;
+                document.getElementById('meetings').textContent = meetings;
+                showNotification('📅 Meeting scheduled!');
+            }
+
+            prospects++;
+            document.getElementById('prospects').textContent = prospects;
+
+            // Move to next action
+            currentActionIndex = (currentActionIndex + 1) % actions.length;
+            const action = actions[currentActionIndex];
+            updateAction(action.title, action.content);
+            updateNextAction(action.next, action.nextCompany, '2 min');
         }
 
         function updateAction(title, content) {
@@ -645,12 +1001,78 @@ Want me to generate their custom landing page?`,
             document.getElementById('actionContent').textContent = content;
         }
 
-        function updateStats(prospects, emails, responses, meetings) {
-            if (prospects > 0) document.getElementById('prospects').textContent = prospects;
-            if (emails > 0) document.getElementById('emails').textContent = emails;
-            if (responses > 0) document.getElementById('responses').textContent = responses;
-            if (meetings > 0) document.getElementById('meetings').textContent = meetings;
+        function updateNextAction(action, company, eta) {
+            document.getElementById('nextAction').textContent = action;
+            document.getElementById('nextActionCompany').textContent = company;
+            document.getElementById('eta').textContent = eta;
         }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('active');
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 3000);
+        }
+
+        // Update uptime
+        setInterval(() => {
+            if (isWorking && !isPaused) {
+                uptimeHours++;
+                document.getElementById('uptime').textContent = `Uptime: ${uptimeHours} hours`;
+            }
+        }, 3600000); // Every hour
+
+        // Control buttons
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            isPaused = !isPaused;
+            const badge = document.getElementById('statusBadge');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const currentAction = document.getElementById('currentAction');
+
+            if (isPaused) {
+                badge.textContent = 'PAUSED';
+                badge.classList.add('paused');
+                pauseBtn.textContent = 'RESUME';
+                pauseBtn.classList.remove('btn-danger');
+                pauseBtn.classList.add('btn-warning');
+                currentAction.classList.add('paused');
+                document.getElementById('actionTitle').textContent = 'Paused';
+                document.getElementById('actionContent').textContent = 'Work suspended by user';
+                showNotification('⏸️ ATLAS paused');
+            } else {
+                badge.textContent = 'ACTIVE';
+                badge.classList.remove('paused');
+                pauseBtn.textContent = 'PAUSE';
+                pauseBtn.classList.remove('btn-warning');
+                pauseBtn.classList.add('btn-danger');
+                currentAction.classList.remove('paused');
+                const action = actions[currentActionIndex];
+                document.getElementById('actionTitle').textContent = action.title;
+                document.getElementById('actionContent').textContent = action.content;
+                showNotification('▶️ ATLAS resumed');
+                if (isWorking) simulateWork();
+            }
+        });
+
+        document.getElementById('pipelineBtn').addEventListener('click', () => {
+            document.getElementById('pipelineModal').classList.add('active');
+        });
+
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('pipelineModal').classList.remove('active');
+        });
+
+        document.getElementById('pipelineModal').addEventListener('click', (e) => {
+            if (e.target.id === 'pipelineModal') {
+                document.getElementById('pipelineModal').classList.remove('active');
+            }
+        });
+
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            showNotification('⚙️ Settings panel coming soon!');
+        });
     </script>
 </body>
 </html>
